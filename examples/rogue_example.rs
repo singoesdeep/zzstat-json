@@ -158,12 +158,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     );
     println!("  Class penalty (-30%): × 0.7");
     println!("  Clamped (1-150): {:.2}", strength.value);
-    println!(
-        "  Expected: {:.2}",
-        strength_with_penalty.max(1.0).min(150.0)
-    );
+    println!("  Expected: {:.2}", strength_with_penalty.clamp(1.0, 150.0));
     assert!(
-        (strength.value - strength_with_penalty.max(1.0).min(150.0)).abs() < 0.01,
+        (strength.value - strength_with_penalty.clamp(1.0, 150.0)).abs() < 0.01,
         "Strength calculation failed"
     );
     println!();

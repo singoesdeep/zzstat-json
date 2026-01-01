@@ -48,31 +48,31 @@ impl Archer {
         let mut resolver = StatResolver::new();
 
         // Load all template configurations
-        let archer_json = fs::read_to_string(&format!(
+        let archer_json = fs::read_to_string(format!(
             "{}/examples/archer.json",
             env!("CARGO_MANIFEST_DIR")
         ))?;
-        let experience_json = fs::read_to_string(&format!(
+        let experience_json = fs::read_to_string(format!(
             "{}/examples/experience_gain.json",
             env!("CARGO_MANIFEST_DIR")
         ))?;
-        let health_regen_json = fs::read_to_string(&format!(
+        let health_regen_json = fs::read_to_string(format!(
             "{}/examples/health_regeneration.json",
             env!("CARGO_MANIFEST_DIR")
         ))?;
-        let mana_pool_json = fs::read_to_string(&format!(
+        let mana_pool_json = fs::read_to_string(format!(
             "{}/examples/mana_pool.json",
             env!("CARGO_MANIFEST_DIR")
         ))?;
-        let movement_speed_json = fs::read_to_string(&format!(
+        let movement_speed_json = fs::read_to_string(format!(
             "{}/examples/movement_speed.json",
             env!("CARGO_MANIFEST_DIR")
         ))?;
-        let status_effects_json = fs::read_to_string(&format!(
+        let status_effects_json = fs::read_to_string(format!(
             "{}/examples/status_effects.json",
             env!("CARGO_MANIFEST_DIR")
         ))?;
-        let resistance_json = fs::read_to_string(&format!(
+        let resistance_json = fs::read_to_string(format!(
             "{}/examples/resistance.json",
             env!("CARGO_MANIFEST_DIR")
         ))?;
@@ -431,7 +431,7 @@ impl Archer {
         enemy_type: &str,
         bonus_value: f64,
     ) -> Result<(), Box<dyn std::error::Error>> {
-        let strong_against_json = fs::read_to_string(&format!(
+        let strong_against_json = fs::read_to_string(format!(
             "{}/examples/strong_against.json",
             env!("CARGO_MANIFEST_DIR")
         ))?;
