@@ -1,0 +1,243 @@
+{
+  "templates": {
+    "BaseStrength": {
+      "description": "Base Strength stat - foundation for many other stats",
+      "sources": [
+        {
+          "type": "constant",
+          "value": "{{base_strength}}",
+          "name": "Base Strength value"
+        },
+        {
+          "type": "scaling",
+          "base": 0.0,
+          "scale": "{{strength_per_level}}",
+          "level": "{{level}}",
+          "name": "Level-based Strength scaling"
+        }
+      ],
+      "transforms": [
+        {
+          "type": "clamp",
+          "min": 1.0,
+          "max": 200.0,
+          "name": "Strength bounds (1-200)"
+        }
+      ]
+    },
+    "BaseVitality": {
+      "description": "Base Vitality stat - affects HP and resistances",
+      "sources": [
+        {
+          "type": "constant",
+          "value": "{{base_vitality}}",
+          "name": "Base Vitality value"
+        },
+        {
+          "type": "scaling",
+          "base": 0.0,
+          "scale": "{{vitality_per_level}}",
+          "level": "{{level}}",
+          "name": "Level-based Vitality scaling"
+        }
+      ],
+      "transforms": [
+        {
+          "type": "clamp",
+          "min": 1.0,
+          "max": 200.0,
+          "name": "Vitality bounds (1-200)"
+        }
+      ]
+    },
+    "ComplexHP": {
+      "description": "Complex HP - depends on Strength, Vitality, and Defense",
+      "sources": [
+        {
+          "type": "constant",
+          "value": "{{base_hp}}",
+          "name": "Base HP value"
+        },
+        {
+          "type": "scaling",
+          "base": 0.0,
+          "scale": "{{hp_per_level}}",
+          "level": "{{level}}",
+          "name": "Level-based HP scaling"
+        }
+      ],
+      "transforms": [
+        {
+          "type": "map",
+          "dependencies": ["Strength"],
+          "multiplier": 3.0,
+          "name": "HP bonus from Strength (Strength * 3)"
+        },
+        {
+          "type": "map",
+          "dependencies": ["Vitality"],
+          "multiplier": 4.0,
+          "name": "HP bonus from Vitality (Vitality * 4)"
+        },
+        {
+          "type": "map",
+          "dependencies": ["Defense"],
+          "multiplier": 2.0,
+          "name": "HP bonus from Defense (Defense * 2)"
+        },
+        {
+          "type": "multiplicative",
+          "value": "{{hp_multiplier}}",
+          "name": "HP multiplier"
+        },
+        {
+          "type": "conditional",
+          "condition_stat": "Vitality",
+          "condition_value": 50.0,
+          "operator": ">=",
+          "then": {
+            "type": "multiplicative",
+            "value": 1.15,
+            "name": "+15% HP bonus (High Vitality)"
+          },
+          "else_then": null
+        },
+        {
+          "type": "clamp",
+          "min": "{{min_hp}}",
+          "max": null,
+          "name": "Minimum HP guarantee"
+        }
+      ]
+    },
+    "ComplexDefense": {
+      "description": "Complex Defense - depends on Strength and Vitality",
+      "sources": [
+        {
+          "type": "constant",
+          "value": "{{base_defense}}",
+          "name": "Base Defense value"
+        },
+        {
+          "type": "scaling",
+          "base": 0.0,
+          "scale": "{{defense_per_level}}",
+          "level": "{{level}}",
+          "name": "Level-based Defense scaling"
+        }
+      ],
+      "transforms": [
+        {
+          "type": "map",
+          "dependencies": ["Strength"],
+          "multiplier": 1.5,
+          "name": "Defense bonus from Strength (Strength * 1.5)"
+        },
+        {
+          "type": "map",
+          "dependencies": ["Vitality"],
+          "multiplier": 2.0,
+          "name": "Defense bonus from Vitality (Vitality * 2)"
+        },
+        {
+          "type": "additive",
+          "value": "{{defense_bonus}}",
+          "name": "Equipment Defense bonus"
+        },
+        {
+          "type": "multiplicative",
+          "value": "{{defense_multiplier}}",
+          "name": "Defense multiplier"
+        },
+        {
+          "type": "conditional",
+          "condition_stat": "Strength",
+          "condition_value": 40.0,
+          "operator": ">=",
+          "then": {
+            "type": "multiplicative",
+            "value": 1.1,
+            "name": "+10% Defense bonus (High Strength)"
+          },
+          "else_then": null
+        },
+        {
+          "type": "clamp",
+          "min": 0.0,
+          "max": null,
+          "name": "Minimum 0 Defense"
+        }
+      ]
+    },
+    "ComplexATK": {
+      "description": "Complex ATK - depends on Strength, and scales with HP percentage",
+      "sources": [
+        {
+          "type": "constant",
+          "value": "{{base_atk}}",
+          "name": "Base ATK value"
+        },
+        {
+          "type": "scaling",
+          "base": 0.0,
+          "scale": "{{atk_per_level}}",
+          "level": "{{level}}",
+          "name": "Level-based ATK scaling"
+        }
+      ],
+      "transforms": [
+        {
+          "type": "map",
+          "dependencies": ["Strength"],
+          "multiplier": 2.0,
+          "name": "ATK bonus from Strength (Strength * 2)"
+        },
+        {
+          "type": "additive",
+          "value": "{{atk_bonus}}",
+          "name": "Equipment ATK bonus"
+        },
+        {
+          "type": "multiplicative",
+          "value": "{{atk_multiplier}}",
+          "name": "ATK multiplier"
+        },
+        {
+          "type": "conditional",
+          "condition_stat": "Strength",
+          "condition_value": 50.0,
+          "operator": ">=",
+          "then": {
+            "type": "multiplicative",
+            "value": 1.2,
+            "name": "+20% ATK bonus (High Strength - Power Strike)"
+          },
+          "else_then": {
+            "type": "multiplicative",
+            "value": 1.0,
+            "name": "No bonus"
+          }
+        },
+        {
+          "type": "conditional",
+          "condition_stat": "Defense",
+          "condition_value": 30.0,
+          "operator": ">=",
+          "then": {
+            "type": "multiplicative",
+            "value": 0.9,
+            "name": "-10% ATK penalty (High Defense - Heavy Armor)"
+          },
+          "else_then": null
+        },
+        {
+          "type": "clamp",
+          "min": null,
+          "max": "{{max_atk}}",
+          "name": "Maximum ATK limit"
+        }
+      ]
+    }
+  }
+}
+

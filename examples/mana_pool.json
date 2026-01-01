@@ -1,0 +1,146 @@
+{
+  "templates": {
+    "ManaPool": {
+      "description": "Mana Pool template - Maximum mana, affected by Intelligence/Vitality",
+      "sources": [
+        {
+          "type": "constant",
+          "value": "{{base_mana}}",
+          "name": "Base mana value"
+        },
+        {
+          "type": "scaling",
+          "base": 0.0,
+          "scale": "{{mana_per_level}}",
+          "level": "{{level}}",
+          "name": "Level-based mana scaling"
+        }
+      ],
+      "transforms": [
+        {
+          "type": "map",
+          "dependencies": ["Intelligence"],
+          "multiplier": 5.0,
+          "name": "Mana bonus from Intelligence (Intelligence * 5)"
+        },
+        {
+          "type": "map",
+          "dependencies": ["Vitality"],
+          "multiplier": 2.0,
+          "name": "Mana bonus from Vitality (Vitality * 2)"
+        },
+        {
+          "type": "additive",
+          "value": "{{mana_bonus}}",
+          "name": "Equipment mana bonus"
+        },
+        {
+          "type": "multiplicative",
+          "value": "{{mana_multiplier}}",
+          "name": "Mana multiplier"
+        },
+        {
+          "type": "conditional",
+          "condition_stat": "Intelligence",
+          "condition_value": 40.0,
+          "operator": ">=",
+          "then": {
+            "type": "multiplicative",
+            "value": 1.2,
+            "name": "+20% mana bonus (High Intelligence - Mana Mastery)"
+          },
+          "else_then": {
+            "type": "multiplicative",
+            "value": 1.0,
+            "name": "No bonus"
+          }
+        },
+        {
+          "type": "clamp",
+          "min": 0.0,
+          "max": null,
+          "name": "Minimum 0 mana"
+        }
+      ]
+    },
+    "ManaRegeneration": {
+      "description": "Mana Regeneration template - Mana per second regeneration",
+      "sources": [
+        {
+          "type": "constant",
+          "value": "{{base_mana_regen}}",
+          "name": "Base mana regeneration per second"
+        },
+        {
+          "type": "scaling",
+          "base": 0.0,
+          "scale": "{{mana_regen_per_level}}",
+          "level": "{{level}}",
+          "name": "Level-based mana regeneration scaling"
+        }
+      ],
+      "transforms": [
+        {
+          "type": "map",
+          "dependencies": ["Intelligence"],
+          "multiplier": 0.3,
+          "name": "Mana regeneration from Intelligence (Intelligence * 0.3 MP/s)"
+        },
+        {
+          "type": "additive",
+          "value": "{{mana_regen_bonus}}",
+          "name": "Equipment mana regeneration bonus"
+        },
+        {
+          "type": "multiplicative",
+          "value": "{{mana_regen_multiplier}}",
+          "name": "Mana regeneration multiplier (buffs, potions)"
+        },
+        {
+          "type": "conditional",
+          "condition_stat": "Intelligence",
+          "condition_value": 50.0,
+          "operator": ">=",
+          "then": {
+            "type": "multiplicative",
+            "value": 1.4,
+            "name": "+40% mana regeneration (High Intelligence - Mana Flow)"
+          },
+          "else_then": null
+        },
+        {
+          "type": "clamp",
+          "min": 0.0,
+          "max": "{{max_mana_regen}}",
+          "name": "Maximum mana regeneration limit"
+        }
+      ]
+    },
+    "Intelligence": {
+      "description": "Intelligence template - Affects mana pool and magic damage",
+      "sources": [
+        {
+          "type": "constant",
+          "value": "{{base_intelligence}}",
+          "name": "Base Intelligence value"
+        },
+        {
+          "type": "scaling",
+          "base": 0.0,
+          "scale": "{{intelligence_per_level}}",
+          "level": "{{level}}",
+          "name": "Level-based Intelligence scaling"
+        }
+      ],
+      "transforms": [
+        {
+          "type": "clamp",
+          "min": 1.0,
+          "max": 200.0,
+          "name": "Intelligence bounds (1-200)"
+        }
+      ]
+    }
+  }
+}
+

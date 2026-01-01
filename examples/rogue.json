@@ -1,0 +1,199 @@
+{
+  "templates": {
+    "RogueHP": {
+      "description": "Rogue HP template - Low HP, high agility dependency",
+      "sources": [
+        {
+          "type": "constant",
+          "value": "{{base_hp}}",
+          "name": "Base HP value"
+        },
+        {
+          "type": "scaling",
+          "base": 0.0,
+          "scale": "{{hp_per_level}}",
+          "level": "{{level}}",
+          "name": "Level-based HP scaling"
+        }
+      ],
+      "transforms": [
+        {
+          "type": "map",
+          "dependencies": ["Agility"],
+          "multiplier": 2.5,
+          "name": "HP bonus from Agility (Agility * 2.5)"
+        },
+        {
+          "type": "multiplicative",
+          "value": 0.85,
+          "name": "-15% HP penalty (Rogue class)"
+        },
+        {
+          "type": "clamp",
+          "min": 40.0,
+          "max": null,
+          "name": "Minimum 40 HP guarantee"
+        }
+      ]
+    },
+    "RogueAgility": {
+      "description": "Rogue Agility template - Very high Agility stat",
+      "sources": [
+        {
+          "type": "constant",
+          "value": "{{base_agility}}",
+          "name": "Base Agility value"
+        },
+        {
+          "type": "scaling",
+          "base": 0.0,
+          "scale": "{{agility_per_level}}",
+          "level": "{{level}}",
+          "name": "Level-based Agility scaling"
+        }
+      ],
+      "transforms": [
+        {
+          "type": "multiplicative",
+          "value": 1.25,
+          "name": "+25% Agility bonus (Rogue class)"
+        },
+        {
+          "type": "clamp",
+          "min": 1.0,
+          "max": 250.0,
+          "name": "Agility bounds (1-250)"
+        }
+      ]
+    },
+    "RogueATK": {
+      "description": "Rogue ATK template - High critical chance, affected by Agility",
+      "sources": [
+        {
+          "type": "constant",
+          "value": "{{base_atk}}",
+          "name": "Base ATK value"
+        },
+        {
+          "type": "scaling",
+          "base": 0.0,
+          "scale": "{{atk_per_level}}",
+          "level": "{{level}}",
+          "name": "Level-based ATK scaling"
+        }
+      ],
+      "transforms": [
+        {
+          "type": "map",
+          "dependencies": ["Agility"],
+          "multiplier": 1.2,
+          "name": "ATK bonus from Agility (Agility * 1.2)"
+        },
+        {
+          "type": "additive",
+          "value": "{{atk_bonus}}",
+          "name": "Equipment ATK bonus"
+        },
+        {
+          "type": "multiplicative",
+          "value": "{{atk_multiplier}}",
+          "name": "ATK multiplier"
+        },
+        {
+          "type": "conditional",
+          "condition_stat": "Agility",
+          "condition_value": 40.0,
+          "operator": ">=",
+          "then": {
+            "type": "multiplicative",
+            "value": 1.25,
+            "name": "+25% ATK bonus (High Agility - Critical Strike)"
+          },
+          "else_then": {
+            "type": "multiplicative",
+            "value": 1.0,
+            "name": "No bonus"
+          }
+        },
+        {
+          "type": "conditional",
+          "condition_stat": "Agility",
+          "condition_value": 80.0,
+          "operator": ">=",
+          "then": {
+            "type": "multiplicative",
+            "value": 1.1,
+            "name": "+10% additional ATK bonus (Very High Agility)"
+          },
+          "else_then": null
+        },
+        {
+          "type": "clamp",
+          "min": null,
+          "max": "{{max_atk}}",
+          "name": "Maximum ATK limit"
+        }
+      ]
+    },
+    "RogueCriticalChance": {
+      "description": "Rogue Critical Chance template - Based on Agility",
+      "sources": [
+        {
+          "type": "constant",
+          "value": "{{base_crit_chance}}",
+          "name": "Base critical chance (%)"
+        }
+      ],
+      "transforms": [
+        {
+          "type": "map",
+          "dependencies": ["Agility"],
+          "multiplier": 0.15,
+          "name": "Critical chance from Agility (Agility * 0.15%)"
+        },
+        {
+          "type": "additive",
+          "value": "{{crit_bonus}}",
+          "name": "Equipment critical chance bonus"
+        },
+        {
+          "type": "clamp",
+          "min": 0.0,
+          "max": 100.0,
+          "name": "Critical chance bounds (0-100%)"
+        }
+      ]
+    },
+    "RogueStrength": {
+      "description": "Rogue Strength template - Low Strength for rogues",
+      "sources": [
+        {
+          "type": "constant",
+          "value": "{{base_strength}}",
+          "name": "Base Strength value"
+        },
+        {
+          "type": "scaling",
+          "base": 0.0,
+          "scale": "{{strength_per_level}}",
+          "level": "{{level}}",
+          "name": "Level-based Strength scaling"
+        }
+      ],
+      "transforms": [
+        {
+          "type": "multiplicative",
+          "value": 0.7,
+          "name": "-30% Strength penalty (Rogue class)"
+        },
+        {
+          "type": "clamp",
+          "min": 1.0,
+          "max": 150.0,
+          "name": "Strength bounds (1-150)"
+        }
+      ]
+    }
+  }
+}
+

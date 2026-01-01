@@ -1,0 +1,178 @@
+{
+  "templates": {
+    "BleedDamage": {
+      "description": "Bleed Damage template - Damage over time effect",
+      "sources": [
+        {
+          "type": "constant",
+          "value": "{{base_bleed_damage}}",
+          "name": "Base bleed damage per second"
+        },
+        {
+          "type": "scaling",
+          "base": 0.0,
+          "scale": "{{bleed_per_level}}",
+          "level": "{{level}}",
+          "name": "Level-based bleed damage scaling"
+        }
+      ],
+      "transforms": [
+        {
+          "type": "map",
+          "dependencies": ["ATK"],
+          "multiplier": 0.1,
+          "name": "Bleed damage from ATK (ATK * 0.1)"
+        },
+        {
+          "type": "multiplicative",
+          "value": "{{bleed_multiplier}}",
+          "name": "Bleed damage multiplier"
+        },
+        {
+          "type": "clamp",
+          "min": 0.0,
+          "max": null,
+          "name": "Minimum 0 bleed damage"
+        }
+      ]
+    },
+    "BurnDamage": {
+      "description": "Burn Damage template - Fire damage over time",
+      "sources": [
+        {
+          "type": "constant",
+          "value": "{{base_burn_damage}}",
+          "name": "Base burn damage per second"
+        },
+        {
+          "type": "scaling",
+          "base": 0.0,
+          "scale": "{{burn_per_level}}",
+          "level": "{{level}}",
+          "name": "Level-based burn damage scaling"
+        }
+      ],
+      "transforms": [
+        {
+          "type": "map",
+          "dependencies": ["ATK"],
+          "multiplier": 0.15,
+          "name": "Burn damage from ATK (ATK * 0.15)"
+        },
+        {
+          "type": "multiplicative",
+          "value": "{{burn_multiplier}}",
+          "name": "Burn damage multiplier"
+        },
+        {
+          "type": "clamp",
+          "min": 0.0,
+          "max": null,
+          "name": "Minimum 0 burn damage"
+        }
+      ]
+    },
+    "PoisonDamage": {
+      "description": "Poison Damage template - Poison damage over time",
+      "sources": [
+        {
+          "type": "constant",
+          "value": "{{base_poison_damage}}",
+          "name": "Base poison damage per second"
+        },
+        {
+          "type": "scaling",
+          "base": 0.0,
+          "scale": "{{poison_per_level}}",
+          "level": "{{level}}",
+          "name": "Level-based poison damage scaling"
+        }
+      ],
+      "transforms": [
+        {
+          "type": "map",
+          "dependencies": ["ATK"],
+          "multiplier": 0.12,
+          "name": "Poison damage from ATK (ATK * 0.12)"
+        },
+        {
+          "type": "multiplicative",
+          "value": "{{poison_multiplier}}",
+          "name": "Poison damage multiplier"
+        },
+        {
+          "type": "clamp",
+          "min": 0.0,
+          "max": null,
+          "name": "Minimum 0 poison damage"
+        }
+      ]
+    },
+    "StunDuration": {
+      "description": "Stun Duration template - Stun effect duration in seconds",
+      "sources": [
+        {
+          "type": "constant",
+          "value": "{{base_stun_duration}}",
+          "name": "Base stun duration (seconds)"
+        },
+        {
+          "type": "scaling",
+          "base": 0.0,
+          "scale": "{{stun_per_level}}",
+          "level": "{{level}}",
+          "name": "Level-based stun duration scaling"
+        }
+      ],
+      "transforms": [
+        {
+          "type": "additive",
+          "value": "{{stun_bonus}}",
+          "name": "Stun duration bonus"
+        },
+        {
+          "type": "multiplicative",
+          "value": "{{stun_multiplier}}",
+          "name": "Stun duration multiplier"
+        },
+        {
+          "type": "clamp",
+          "min": 0.0,
+          "max": 10.0,
+          "name": "Stun duration bounds (0-10 seconds)"
+        }
+      ]
+    },
+    "SlowEffect": {
+      "description": "Slow Effect template - Movement speed reduction percentage",
+      "sources": [
+        {
+          "type": "constant",
+          "value": "{{base_slow_percent}}",
+          "name": "Base slow effect (%)"
+        },
+        {
+          "type": "scaling",
+          "base": 0.0,
+          "scale": "{{slow_per_level}}",
+          "level": "{{level}}",
+          "name": "Level-based slow effect scaling"
+        }
+      ],
+      "transforms": [
+        {
+          "type": "additive",
+          "value": "{{slow_bonus}}",
+          "name": "Slow effect bonus"
+        },
+        {
+          "type": "clamp",
+          "min": 0.0,
+          "max": 90.0,
+          "name": "Slow effect bounds (0-90%)"
+        }
+      ]
+    }
+  }
+}
+

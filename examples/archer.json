@@ -1,0 +1,183 @@
+{
+  "templates": {
+    "ArcherHP": {
+      "description": "Archer HP template - Moderate HP, balanced stats",
+      "sources": [
+        {
+          "type": "constant",
+          "value": "{{base_hp}}",
+          "name": "Base HP value"
+        },
+        {
+          "type": "scaling",
+          "base": 0.0,
+          "scale": "{{hp_per_level}}",
+          "level": "{{level}}",
+          "name": "Level-based HP scaling"
+        }
+      ],
+      "transforms": [
+        {
+          "type": "map",
+          "dependencies": ["Vitality"],
+          "multiplier": 3.0,
+          "name": "HP bonus from Vitality (Vitality * 3)"
+        },
+        {
+          "type": "map",
+          "dependencies": ["Dexterity"],
+          "multiplier": 1.5,
+          "name": "HP bonus from Dexterity (Dexterity * 1.5)"
+        },
+        {
+          "type": "clamp",
+          "min": 80.0,
+          "max": null,
+          "name": "Minimum 80 HP guarantee"
+        }
+      ]
+    },
+    "ArcherDexterity": {
+      "description": "Archer Dexterity template - High Dexterity for accuracy",
+      "sources": [
+        {
+          "type": "constant",
+          "value": "{{base_dexterity}}",
+          "name": "Base Dexterity value"
+        },
+        {
+          "type": "scaling",
+          "base": 0.0,
+          "scale": "{{dexterity_per_level}}",
+          "level": "{{level}}",
+          "name": "Level-based Dexterity scaling"
+        }
+      ],
+      "transforms": [
+        {
+          "type": "multiplicative",
+          "value": 1.15,
+          "name": "+15% Dexterity bonus (Archer class)"
+        },
+        {
+          "type": "clamp",
+          "min": 1.0,
+          "max": 200.0,
+          "name": "Dexterity bounds (1-200)"
+        }
+      ]
+    },
+    "ArcherATK": {
+      "description": "Archer ATK template - Ranged damage, affected by Dexterity",
+      "sources": [
+        {
+          "type": "constant",
+          "value": "{{base_atk}}",
+          "name": "Base ATK value"
+        },
+        {
+          "type": "scaling",
+          "base": 0.0,
+          "scale": "{{atk_per_level}}",
+          "level": "{{level}}",
+          "name": "Level-based ATK scaling"
+        }
+      ],
+      "transforms": [
+        {
+          "type": "map",
+          "dependencies": ["Dexterity"],
+          "multiplier": 1.8,
+          "name": "ATK bonus from Dexterity (Dexterity * 1.8)"
+        },
+        {
+          "type": "additive",
+          "value": "{{atk_bonus}}",
+          "name": "Equipment ATK bonus (bow/arrow)"
+        },
+        {
+          "type": "multiplicative",
+          "value": "{{atk_multiplier}}",
+          "name": "ATK multiplier"
+        },
+        {
+          "type": "conditional",
+          "condition_stat": "Dexterity",
+          "condition_value": 50.0,
+          "operator": ">=",
+          "then": {
+            "type": "multiplicative",
+            "value": 1.2,
+            "name": "+20% ATK bonus (High Dexterity - Precise Shot)"
+          },
+          "else_then": {
+            "type": "multiplicative",
+            "value": 1.0,
+            "name": "No bonus"
+          }
+        },
+        {
+          "type": "clamp",
+          "min": null,
+          "max": "{{max_atk}}",
+          "name": "Maximum ATK limit"
+        }
+      ]
+    },
+    "ArcherAccuracy": {
+      "description": "Archer Accuracy template - Hit chance based on Dexterity",
+      "sources": [
+        {
+          "type": "constant",
+          "value": "{{base_accuracy}}",
+          "name": "Base accuracy (%)"
+        }
+      ],
+      "transforms": [
+        {
+          "type": "map",
+          "dependencies": ["Dexterity"],
+          "multiplier": 0.5,
+          "name": "Accuracy from Dexterity (Dexterity * 0.5%)"
+        },
+        {
+          "type": "additive",
+          "value": "{{accuracy_bonus}}",
+          "name": "Equipment accuracy bonus"
+        },
+        {
+          "type": "clamp",
+          "min": 0.0,
+          "max": 100.0,
+          "name": "Accuracy bounds (0-100%)"
+        }
+      ]
+    },
+    "ArcherVitality": {
+      "description": "Archer Vitality template - Moderate Vitality",
+      "sources": [
+        {
+          "type": "constant",
+          "value": "{{base_vitality}}",
+          "name": "Base Vitality value"
+        },
+        {
+          "type": "scaling",
+          "base": 0.0,
+          "scale": "{{vitality_per_level}}",
+          "level": "{{level}}",
+          "name": "Level-based Vitality scaling"
+        }
+      ],
+      "transforms": [
+        {
+          "type": "clamp",
+          "min": 1.0,
+          "max": 100.0,
+          "name": "Vitality bounds (1-100)"
+        }
+      ]
+    }
+  }
+}
+

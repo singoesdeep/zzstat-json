@@ -1,0 +1,45 @@
+[package]
+name = "zzstat-json"
+version = "0.1.0"
+edition = "2024"
+description = "JSON-based stat configuration for zzstat"
+license = "MIT"
+repository = "https://github.com/singoesdeep/zzstat-json"
+
+[dependencies]
+zzstat = "0.1.4"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+thiserror = "1.0"
+
+[[example]]
+name = "basic_stats_example"
+path = "examples/basic_stats_example.rs"
+
+[[example]]
+name = "warrior_example"
+path = "examples/warrior_example.rs"
+
+[[example]]
+name = "rogue_example"
+path = "examples/rogue_example.rs"
+
+[[example]]
+name = "paladin_example"
+path = "examples/paladin_example.rs"
+
+[[example]]
+name = "resistance_example"
+path = "examples/resistance_example.rs"
+
+[[example]]
+name = "mana_pool_example"
+path = "examples/mana_pool_example.rs"
+
+[[example]]
+name = "complex_dependencies_example"
+path = "examples/complex_dependencies_example.rs"
+
+[[example]]
+name = "archer_entity_example"
+path = "examples/archer_entity_example.rs"

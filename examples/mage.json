@@ -1,0 +1,158 @@
+{
+  "templates": {
+    "MageHP": {
+      "description": "Mage HP template - Low HP, high Vitality dependency",
+      "sources": [
+        {
+          "type": "constant",
+          "value": "{{base_hp}}",
+          "name": "Base HP value"
+        },
+        {
+          "type": "scaling",
+          "base": 0.0,
+          "scale": "{{hp_per_level}}",
+          "level": "{{level}}",
+          "name": "Level-based HP scaling"
+        },
+        {
+          "type": "map",
+          "dependencies": ["Vitality"],
+          "multiplier": 5.0,
+          "name": "HP bonus from Vitality (Vitality * 5, Mage bonus)"
+        }
+      ],
+      "transforms": [
+        {
+          "type": "multiplicative",
+          "value": 0.9,
+          "name": "-10% HP penalty (Mage weakness)"
+        },
+        {
+          "type": "clamp",
+          "min": 50.0,
+          "max": null,
+          "name": "Minimum 50 HP guarantee"
+        }
+      ]
+    },
+    "MageVitality": {
+      "description": "Mage Vitality template - High Vitality for mages",
+      "sources": [
+        {
+          "type": "constant",
+          "value": "{{base_vitality}}",
+          "name": "Base Vitality value"
+        },
+        {
+          "type": "scaling",
+          "base": 0.0,
+          "scale": "{{vitality_per_level}}",
+          "level": "{{level}}",
+          "name": "Level-based Vitality scaling"
+        }
+      ],
+      "transforms": [
+        {
+          "type": "multiplicative",
+          "value": 1.1,
+          "name": "+10% Vitality bonus (Mage class)"
+        },
+        {
+          "type": "clamp",
+          "min": 1.0,
+          "max": 100.0,
+          "name": "Vitality bounds (1-100)"
+        }
+      ]
+    },
+    "MageATK": {
+      "description": "Mage ATK template - Magic damage, affected by Vitality",
+      "sources": [
+        {
+          "type": "constant",
+          "value": "{{base_atk}}",
+          "name": "Base ATK value"
+        },
+        {
+          "type": "scaling",
+          "base": 0.0,
+          "scale": "{{atk_per_level}}",
+          "level": "{{level}}",
+          "name": "Level-based ATK scaling"
+        },
+      ],
+      "transforms": [
+        {
+          "type": "map",
+          "dependencies": ["Vitality"],
+          "multiplier": 0.8,
+          "name": "ATK bonus from Vitality (Vitality * 0.8)"
+        },
+        {
+          "type": "additive",
+          "value": "{{atk_bonus}}",
+          "name": "Equipment ATK bonus"
+        },
+        {
+          "type": "multiplicative",
+          "value": "{{atk_multiplier}}",
+          "name": "ATK multiplier"
+        },
+        {
+          "type": "conditional",
+          "condition_stat": "Vitality",
+          "condition_value": 30.0,
+          "operator": ">=",
+          "then": {
+            "type": "multiplicative",
+            "value": 1.2,
+            "name": "+20% ATK bonus (High Vitality)"
+          },
+          "else_then": {
+            "type": "multiplicative",
+            "value": 1.0,
+            "name": "No bonus"
+          }
+        },
+        {
+          "type": "clamp",
+          "min": null,
+          "max": "{{max_atk}}",
+          "name": "Maximum ATK limit"
+        }
+      ]
+    },
+    "MageStrength": {
+      "description": "Mage Strength template - Low Strength for mages",
+      "sources": [
+        {
+          "type": "constant",
+          "value": "{{base_strength}}",
+          "name": "Base Strength value"
+        },
+        {
+          "type": "scaling",
+          "base": 0.0,
+          "scale": "{{strength_per_level}}",
+          "level": "{{level}}",
+          "name": "Level-based Strength scaling"
+        }
+      ],
+      "transforms": [
+        {
+          "type": "multiplicative",
+          "value": 0.8,
+          "name": "-20% Strength penalty (Mage class)"
+        },
+        {
+          "type": "clamp",
+          "min": 1.0,
+          "max": 200.0,
+          "name": "Strength bounds (1-200)"
+        }
+      ]
+    }
+  }
+}
+

@@ -1,0 +1,153 @@
+{
+  "templates": {
+    "WarriorHP": {
+      "description": "Warrior HP template - High HP, affected by Vitality and Strength",
+      "sources": [
+        {
+          "type": "constant",
+          "value": "{{base_hp}}",
+          "name": "Base HP value"
+        },
+        {
+          "type": "scaling",
+          "base": 0.0,
+          "scale": "{{hp_per_level}}",
+          "level": "{{level}}",
+          "name": "Level-based HP scaling"
+        }
+      ],
+      "transforms": [
+        {
+          "type": "map",
+          "dependencies": ["Vitality"],
+          "multiplier": 3.0,
+          "name": "HP bonus from Vitality (Vitality * 3)"
+        },
+        {
+          "type": "map",
+          "dependencies": ["Strength"],
+          "multiplier": 2.0,
+          "name": "HP bonus from Strength (Strength * 2)"
+        },
+        {
+          "type": "multiplicative",
+          "value": 1.2,
+          "name": "+20% HP bonus (Warrior class)"
+        },
+        {
+          "type": "clamp",
+          "min": 100.0,
+          "max": null,
+          "name": "Minimum 100 HP guarantee"
+        }
+      ]
+    },
+    "WarriorVitality": {
+      "description": "Warrior Vitality template - Moderate Vitality",
+      "sources": [
+        {
+          "type": "constant",
+          "value": "{{base_vitality}}",
+          "name": "Base Vitality value"
+        },
+        {
+          "type": "scaling",
+          "base": 0.0,
+          "scale": "{{vitality_per_level}}",
+          "level": "{{level}}",
+          "name": "Level-based Vitality scaling"
+        }
+      ],
+      "transforms": [
+        {
+          "type": "clamp",
+          "min": 1.0,
+          "max": 100.0,
+          "name": "Vitality bounds (1-100)"
+        }
+      ]
+    },
+    "WarriorATK": {
+      "description": "Warrior ATK template - High physical damage, affected by Strength",
+      "sources": [
+        {
+          "type": "constant",
+          "value": "{{base_atk}}",
+          "name": "Base ATK value"
+        },
+        {
+          "type": "scaling",
+          "base": 0.0,
+          "scale": "{{atk_per_level}}",
+          "level": "{{level}}",
+          "name": "Level-based ATK scaling"
+        }
+      ],
+      "transforms": [
+        {
+          "type": "map",
+          "dependencies": ["Strength"],
+          "multiplier": 1.5,
+          "name": "ATK bonus from Strength (Strength * 1.5)"
+        },
+        {
+          "type": "additive",
+          "value": "{{atk_bonus}}",
+          "name": "Equipment ATK bonus"
+        },
+        {
+          "type": "multiplicative",
+          "value": "{{atk_multiplier}}",
+          "name": "ATK multiplier"
+        },
+        {
+          "type": "conditional",
+          "condition_stat": "Strength",
+          "condition_value": 50.0,
+          "operator": ">=",
+          "then": {
+            "type": "multiplicative",
+            "value": 1.15,
+            "name": "+15% ATK bonus (High Strength)"
+          },
+          "else_then": {
+            "type": "multiplicative",
+            "value": 1.0,
+            "name": "No bonus"
+          }
+        },
+        {
+          "type": "clamp",
+          "min": null,
+          "max": "{{max_atk}}",
+          "name": "Maximum ATK limit"
+        }
+      ]
+    },
+    "WarriorStrength": {
+      "description": "Warrior Strength template - High Strength stat",
+      "sources": [
+        {
+          "type": "constant",
+          "value": "{{base_strength}}",
+          "name": "Base Strength value"
+        },
+        {
+          "type": "scaling",
+          "base": 0.0,
+          "scale": "{{strength_per_level}}",
+          "level": "{{level}}",
+          "name": "Level-based Strength scaling"
+        }
+      ],
+      "transforms": [
+        {
+          "type": "clamp",
+          "min": 1.0,
+          "max": 200.0,
+          "name": "Strength bounds (1-200)"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "templates": {
+    "MovementSpeed": {
+      "description": "Movement Speed template - Character movement speed based on Agility/Dexterity",
+      "sources": [
+        {
+          "type": "constant",
+          "value": "{{base_movement_speed}}",
+          "name": "Base movement speed"
+        }
+      ],
+      "transforms": [
+        {
+          "type": "map",
+          "dependencies": ["Agility"],
+          "multiplier": 0.1,
+          "name": "Speed bonus from Agility (Agility * 0.1)"
+        },
+        {
+          "type": "map",
+          "dependencies": ["Dexterity"],
+          "multiplier": 0.08,
+          "name": "Speed bonus from Dexterity (Dexterity * 0.08)"
+        },
+        {
+          "type": "additive",
+          "value": "{{speed_bonus}}",
+          "name": "Equipment speed bonus (boots, etc.)"
+        },
+        {
+          "type": "multiplicative",
+          "value": "{{speed_multiplier}}",
+          "name": "Speed multiplier (buffs/debuffs)"
+        },
+        {
+          "type": "conditional",
+          "condition_stat": "Agility",
+          "condition_value": 60.0,
+          "operator": ">=",
+          "then": {
+            "type": "multiplicative",
+            "value": 1.15,
+            "name": "+15% speed bonus (High Agility - Swift Movement)"
+          },
+          "else_then": null
+        },
+        {
+          "type": "conditional",
+          "condition_stat": "Dexterity",
+          "condition_value": 60.0,
+          "operator": ">=",
+          "then": {
+            "type": "multiplicative",
+            "value": 1.1,
+            "name": "+10% speed bonus (High Dexterity - Quick Reflexes)"
+          },
+          "else_then": null
+        },
+        {
+          "type": "clamp",
+          "min": "{{min_speed}}",
+          "max": "{{max_speed}}",
+          "name": "Speed bounds"
+        }
+      ]
+    }
+  }
+}
+

@@ -1,0 +1,131 @@
+{
+  "stats": {
+    "HP": {
+      "sources": [
+        {
+          "type": "constant",
+          "value": 100.0,
+          "name": "Base HP value"
+        },
+        {
+          "type": "constant",
+          "value": 50.0,
+          "name": "Bonus HP from equipment"
+        },
+        {
+          "type": "scaling",
+          "base": 0.0,
+          "scale": 10.0,
+          "level": 5.0,
+          "name": "Level-based HP (level 5, 10 per level)"
+        }
+      ],
+      "transforms": [
+        {
+          "type": "multiplicative",
+          "value": 1.2,
+          "name": "+20% HP bonus"
+        },
+        {
+          "type": "clamp",
+          "min": 50.0,
+          "max": null,
+          "name": "Minimum 50 HP guarantee"
+        }
+      ]
+    },
+    "ATK": {
+      "sources": [
+        {
+          "type": "constant",
+          "value": 25.0,
+          "name": "Base attack power"
+        },
+        {
+          "type": "scaling",
+          "base": 0.0,
+          "scale": 3.0,
+          "level": 5.0,
+          "name": "Level-based ATK (level 5, 3 per level)"
+        }
+      ],
+      "transforms": [
+        {
+          "type": "additive",
+          "value": 10.0,
+          "name": "+10 ATK from weapon"
+        },
+        {
+          "type": "multiplicative",
+          "value": 1.1,
+          "name": "+10% ATK bonus"
+        },
+        {
+          "type": "clamp",
+          "min": null,
+          "max": 200.0,
+          "name": "Maximum 200 ATK limit"
+        }
+      ]
+    },
+    "DEF": {
+      "sources": [
+        {
+          "type": "constant",
+          "value": 15.0,
+          "name": "Base defense"
+        },
+        {
+          "type": "scaling",
+          "base": 0.0,
+          "scale": 2.0,
+          "level": 5.0,
+          "name": "Level-based DEF (level 5, 2 per level)"
+        }
+      ],
+      "transforms": [
+        {
+          "type": "additive",
+          "value": 5.0,
+          "name": "+5 DEF from armor"
+        },
+        {
+          "type": "clamp",
+          "min": 0.0,
+          "max": null,
+          "name": "Minimum 0 DEF"
+        }
+      ]
+    },
+    "CriticalChance": {
+      "sources": [
+        {
+          "type": "constant",
+          "value": 5.0,
+          "name": "Base critical chance (%)"
+        },
+        {
+          "type": "scaling",
+          "base": 0.0,
+          "scale": 0.5,
+          "level": 5.0,
+          "name": "Level-based critical chance (0.5% per level)"
+        }
+      ],
+      "transforms": [
+        {
+          "type": "additive",
+          "value": 2.0,
+          "name": "+2% critical chance from equipment"
+        },
+        {
+          "type": "clamp",
+          "min": 0.0,
+          "max": 100.0,
+          "name": "Critical chance bounds (0-100%)"
+        }
+      ]
+    }
+  }
+}
+

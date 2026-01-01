@@ -1,0 +1,173 @@
+{
+  "templates": {
+    "FireResistance": {
+      "description": "Fire Resistance template - Reduces fire damage taken",
+      "sources": [
+        {
+          "type": "constant",
+          "value": "{{base_fire_resistance}}",
+          "name": "Base fire resistance (%)"
+        },
+        {
+          "type": "scaling",
+          "base": 0.0,
+          "scale": "{{fire_res_per_level}}",
+          "level": "{{level}}",
+          "name": "Level-based fire resistance scaling"
+        }
+      ],
+      "transforms": [
+        {
+          "type": "map",
+          "dependencies": ["Vitality"],
+          "multiplier": 0.2,
+          "name": "Fire resistance from Vitality (Vitality * 0.2%)"
+        },
+        {
+          "type": "additive",
+          "value": "{{fire_res_bonus}}",
+          "name": "Equipment fire resistance bonus"
+        },
+        {
+          "type": "conditional",
+          "condition_stat": "Vitality",
+          "condition_value": 50.0,
+          "operator": ">=",
+          "then": {
+            "type": "additive",
+            "value": 5.0,
+            "name": "+5% fire resistance (High Vitality - Natural Resistance)"
+          },
+          "else_then": null
+        },
+        {
+          "type": "clamp",
+          "min": 0.0,
+          "max": 90.0,
+          "name": "Fire resistance bounds (0-90%)"
+        }
+      ]
+    },
+    "IceResistance": {
+      "description": "Ice Resistance template - Reduces ice damage taken",
+      "sources": [
+        {
+          "type": "constant",
+          "value": "{{base_ice_resistance}}",
+          "name": "Base ice resistance (%)"
+        },
+        {
+          "type": "scaling",
+          "base": 0.0,
+          "scale": "{{ice_res_per_level}}",
+          "level": "{{level}}",
+          "name": "Level-based ice resistance scaling"
+        }
+      ],
+      "transforms": [
+        {
+          "type": "map",
+          "dependencies": ["Vitality"],
+          "multiplier": 0.2,
+          "name": "Ice resistance from Vitality (Vitality * 0.2%)"
+        },
+        {
+          "type": "additive",
+          "value": "{{ice_res_bonus}}",
+          "name": "Equipment ice resistance bonus"
+        },
+        {
+          "type": "clamp",
+          "min": 0.0,
+          "max": 90.0,
+          "name": "Ice resistance bounds (0-90%)"
+        }
+      ]
+    },
+    "LightningResistance": {
+      "description": "Lightning Resistance template - Reduces lightning damage taken",
+      "sources": [
+        {
+          "type": "constant",
+          "value": "{{base_lightning_resistance}}",
+          "name": "Base lightning resistance (%)"
+        },
+        {
+          "type": "scaling",
+          "base": 0.0,
+          "scale": "{{lightning_res_per_level}}",
+          "level": "{{level}}",
+          "name": "Level-based lightning resistance scaling"
+        }
+      ],
+      "transforms": [
+        {
+          "type": "map",
+          "dependencies": ["Vitality"],
+          "multiplier": 0.2,
+          "name": "Lightning resistance from Vitality (Vitality * 0.2%)"
+        },
+        {
+          "type": "additive",
+          "value": "{{lightning_res_bonus}}",
+          "name": "Equipment lightning resistance bonus"
+        },
+        {
+          "type": "clamp",
+          "min": 0.0,
+          "max": 90.0,
+          "name": "Lightning resistance bounds (0-90%)"
+        }
+      ]
+    },
+    "PoisonResistance": {
+      "description": "Poison Resistance template - Reduces poison damage taken",
+      "sources": [
+        {
+          "type": "constant",
+          "value": "{{base_poison_resistance}}",
+          "name": "Base poison resistance (%)"
+        },
+        {
+          "type": "scaling",
+          "base": 0.0,
+          "scale": "{{poison_res_per_level}}",
+          "level": "{{level}}",
+          "name": "Level-based poison resistance scaling"
+        }
+      ],
+      "transforms": [
+        {
+          "type": "map",
+          "dependencies": ["Vitality"],
+          "multiplier": 0.3,
+          "name": "Poison resistance from Vitality (Vitality * 0.3%)"
+        },
+        {
+          "type": "additive",
+          "value": "{{poison_res_bonus}}",
+          "name": "Equipment poison resistance bonus"
+        },
+        {
+          "type": "conditional",
+          "condition_stat": "Vitality",
+          "condition_value": 70.0,
+          "operator": ">=",
+          "then": {
+            "type": "additive",
+            "value": 10.0,
+            "name": "+10% poison resistance (Very High Vitality - Immunity)"
+          },
+          "else_then": null
+        },
+        {
+          "type": "clamp",
+          "min": 0.0,
+          "max": 95.0,
+          "name": "Poison resistance bounds (0-95%)"
+        }
+      ]
+    }
+  }
+}
+

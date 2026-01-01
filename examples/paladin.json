@@ -1,0 +1,241 @@
+{
+  "templates": {
+    "PaladinHP": {
+      "description": "Paladin HP template - Very high HP, tank class",
+      "sources": [
+        {
+          "type": "constant",
+          "value": "{{base_hp}}",
+          "name": "Base HP value"
+        },
+        {
+          "type": "scaling",
+          "base": 0.0,
+          "scale": "{{hp_per_level}}",
+          "level": "{{level}}",
+          "name": "Level-based HP scaling"
+        }
+      ],
+      "transforms": [
+        {
+          "type": "map",
+          "dependencies": ["Vitality"],
+          "multiplier": 4.0,
+          "name": "HP bonus from Vitality (Vitality * 4)"
+        },
+        {
+          "type": "map",
+          "dependencies": ["Strength"],
+          "multiplier": 2.5,
+          "name": "HP bonus from Strength (Strength * 2.5)"
+        },
+        {
+          "type": "multiplicative",
+          "value": 1.3,
+          "name": "+30% HP bonus (Paladin class)"
+        },
+        {
+          "type": "conditional",
+          "condition_stat": "Vitality",
+          "condition_value": 50.0,
+          "operator": ">=",
+          "then": {
+            "type": "multiplicative",
+            "value": 1.1,
+            "name": "+10% additional HP bonus (High Vitality - Divine Protection)"
+          },
+          "else_then": null
+        },
+        {
+          "type": "clamp",
+          "min": 150.0,
+          "max": null,
+          "name": "Minimum 150 HP guarantee"
+        }
+      ]
+    },
+    "PaladinVitality": {
+      "description": "Paladin Vitality template - High Vitality for tanking",
+      "sources": [
+        {
+          "type": "constant",
+          "value": "{{base_vitality}}",
+          "name": "Base Vitality value"
+        },
+        {
+          "type": "scaling",
+          "base": 0.0,
+          "scale": "{{vitality_per_level}}",
+          "level": "{{level}}",
+          "name": "Level-based Vitality scaling"
+        }
+      ],
+      "transforms": [
+        {
+          "type": "multiplicative",
+          "value": 1.2,
+          "name": "+20% Vitality bonus (Paladin class)"
+        },
+        {
+          "type": "clamp",
+          "min": 1.0,
+          "max": 150.0,
+          "name": "Vitality bounds (1-150)"
+        }
+      ]
+    },
+    "PaladinATK": {
+      "description": "Paladin ATK template - Moderate damage, holy power",
+      "sources": [
+        {
+          "type": "constant",
+          "value": "{{base_atk}}",
+          "name": "Base ATK value"
+        },
+        {
+          "type": "scaling",
+          "base": 0.0,
+          "scale": "{{atk_per_level}}",
+          "level": "{{level}}",
+          "name": "Level-based ATK scaling"
+        }
+      ],
+      "transforms": [
+        {
+          "type": "map",
+          "dependencies": ["Strength"],
+          "multiplier": 1.3,
+          "name": "ATK bonus from Strength (Strength * 1.3)"
+        },
+        {
+          "type": "map",
+          "dependencies": ["Vitality"],
+          "multiplier": 0.5,
+          "name": "ATK bonus from Vitality (Vitality * 0.5)"
+        },
+        {
+          "type": "additive",
+          "value": "{{atk_bonus}}",
+          "name": "Equipment ATK bonus"
+        },
+        {
+          "type": "multiplicative",
+          "value": "{{atk_multiplier}}",
+          "name": "ATK multiplier"
+        },
+        {
+          "type": "conditional",
+          "condition_stat": "Vitality",
+          "condition_value": 40.0,
+          "operator": ">=",
+          "then": {
+            "type": "multiplicative",
+            "value": 1.15,
+            "name": "+15% ATK bonus (High Vitality - Holy Power)"
+          },
+          "else_then": {
+            "type": "multiplicative",
+            "value": 1.0,
+            "name": "No bonus"
+          }
+        },
+        {
+          "type": "clamp",
+          "min": null,
+          "max": "{{max_atk}}",
+          "name": "Maximum ATK limit"
+        }
+      ]
+    },
+    "PaladinDefense": {
+      "description": "Paladin Defense template - High defense, scales with Vitality and Strength",
+      "sources": [
+        {
+          "type": "constant",
+          "value": "{{base_defense}}",
+          "name": "Base Defense value"
+        },
+        {
+          "type": "scaling",
+          "base": 0.0,
+          "scale": "{{defense_per_level}}",
+          "level": "{{level}}",
+          "name": "Level-based Defense scaling"
+        }
+      ],
+      "transforms": [
+        {
+          "type": "map",
+          "dependencies": ["Vitality"],
+          "multiplier": 2.0,
+          "name": "Defense bonus from Vitality (Vitality * 2)"
+        },
+        {
+          "type": "map",
+          "dependencies": ["Strength"],
+          "multiplier": 1.5,
+          "name": "Defense bonus from Strength (Strength * 1.5)"
+        },
+        {
+          "type": "additive",
+          "value": "{{defense_bonus}}",
+          "name": "Equipment Defense bonus (armor/shield)"
+        },
+        {
+          "type": "multiplicative",
+          "value": 1.25,
+          "name": "+25% Defense bonus (Paladin class)"
+        },
+        {
+          "type": "conditional",
+          "condition_stat": "Vitality",
+          "condition_value": 60.0,
+          "operator": ">=",
+          "then": {
+            "type": "multiplicative",
+            "value": 1.2,
+            "name": "+20% additional Defense (Very High Vitality - Divine Shield)"
+          },
+          "else_then": null
+        },
+        {
+          "type": "clamp",
+          "min": 0.0,
+          "max": null,
+          "name": "Minimum 0 Defense"
+        }
+      ]
+    },
+    "PaladinStrength": {
+      "description": "Paladin Strength template - High Strength",
+      "sources": [
+        {
+          "type": "constant",
+          "value": "{{base_strength}}",
+          "name": "Base Strength value"
+        },
+        {
+          "type": "scaling",
+          "base": 0.0,
+          "scale": "{{strength_per_level}}",
+          "level": "{{level}}",
+          "name": "Level-based Strength scaling"
+        }
+      ],
+      "transforms": [
+        {
+          "type": "multiplicative",
+          "value": 1.1,
+          "name": "+10% Strength bonus (Paladin class)"
+        },
+        {
+          "type": "clamp",
+          "min": 1.0,
+          "max": 200.0,
+          "name": "Strength bounds (1-200)"
+        }
+      ]
+    }
+  }
+}
+

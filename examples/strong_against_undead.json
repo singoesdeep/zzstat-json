@@ -1,0 +1,52 @@
+{
+  "templates": {
+    "StrongAgainstUndead": {
+      "description": "Damage bonus specifically against undead enemies - value provided at runtime",
+      "sources": [
+        {
+          "type": "constant",
+          "value": "{{bonus_value}}",
+          "name": "Base damage bonus against undead"
+        },
+        {
+          "type": "scaling",
+          "base": 0.0,
+          "scale": "{{bonus_per_level}}",
+          "level": "{{level}}",
+          "name": "Level-based bonus scaling"
+        }
+      ],
+      "transforms": [
+        {
+          "type": "additive",
+          "value": "{{additional_bonus}}",
+          "name": "Additional bonus"
+        },
+        {
+          "type": "multiplicative",
+          "value": "{{multiplier}}",
+          "name": "Damage multiplier"
+        },
+        {
+          "type": "conditional",
+          "condition_stat": "Level",
+          "condition_value": 0.0,
+          "operator": ">=",
+          "then": {
+            "type": "multiplicative",
+            "value": "{{then_multiplier}}",
+            "name": "Conditional bonus (e.g., if using holy weapon)"
+          },
+          "else_then": null
+        },
+        {
+          "type": "clamp",
+          "min": "{{min_value}}",
+          "max": "{{max_value}}",
+          "name": "Value bounds"
+        }
+      ]
+    }
+  }
+}
+

@@ -1,0 +1,44 @@
+{
+  "templates": {
+    "StrongAgainst": {
+      "description": "Damage bonus against specific enemy types - value provided at runtime",
+      "sources": [
+        {
+          "type": "constant",
+          "value": "{{bonus_value}}",
+          "name": "Base damage bonus value"
+        }
+      ],
+      "transforms": [
+        {
+          "type": "multiplicative",
+          "value": "{{multiplier}}",
+          "name": "Damage multiplier"
+        },
+        {
+          "type": "conditional",
+          "condition_stat": "Level",
+          "condition_value": 0.0,
+          "operator": ">=",
+          "then": {
+            "type": "multiplicative",
+            "value": "{{then_multiplier}}",
+            "name": "Conditional bonus multiplier"
+          },
+          "else_then": {
+            "type": "multiplicative",
+            "value": 1.0,
+            "name": "No conditional bonus"
+          }
+        },
+        {
+          "type": "clamp",
+          "min": "{{min_value}}",
+          "max": "{{max_value}}",
+          "name": "Value bounds"
+        }
+      ]
+    }
+  }
+}
+
