@@ -138,7 +138,7 @@ impl StatTemplateManager {
         for config in entity_configs {
             self.entity_configs
                 .entry(config.entity_id.clone())
-                .or_insert_with(Vec::new)
+                .or_default()
                 .push(config);
         }
 

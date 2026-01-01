@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
 /// JSON configuration structure for stat definitions and templates.
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct StatConfig {
     /// Stat templates (reusable parameterized definitions)
     #[serde(default)]
@@ -14,7 +14,7 @@ pub struct StatConfig {
 }
 
 /// Stat template - parameterizable stat definition
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct StatTemplate {
     /// Template description
     #[serde(default)]
@@ -30,7 +30,7 @@ pub struct StatTemplate {
 }
 
 /// Single stat definition
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct StatDefinition {
     /// Stat sources (additive)
     #[serde(default)]
@@ -180,30 +180,3 @@ pub enum TransformConfig {
     },
 }
 
-impl Default for StatDefinition {
-    fn default() -> Self {
-        Self {
-            sources: Vec::new(),
-            transforms: Vec::new(),
-        }
-    }
-}
-
-impl Default for StatTemplate {
-    fn default() -> Self {
-        Self {
-            description: None,
-            sources: Vec::new(),
-            transforms: Vec::new(),
-        }
-    }
-}
-
-impl Default for StatConfig {
-    fn default() -> Self {
-        Self {
-            templates: HashMap::new(),
-            stats: HashMap::new(),
-        }
-    }
-}
