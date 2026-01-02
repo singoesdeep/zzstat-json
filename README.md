@@ -2,6 +2,10 @@
 
 JSON-based stat configuration for the `zzstat` crate. Define and manage your game stats easily using JSON files.
 
+## Deprecated
+
+This crate is **deprecated as of `0.1.1`**. You most likely don't need it anymore: the [`zzstat`](https://docs.rs/zzstat) crate is powerful enough on its own and provides a simpler, more direct API.
+
 ## Features
 
 - ✅ JSON format for stat definitions

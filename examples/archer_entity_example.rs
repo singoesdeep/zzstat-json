@@ -1,3 +1,5 @@
+#![allow(deprecated)]
+
 //! Archer Entity Example
 //!
 //! This example demonstrates a complete entity system with:

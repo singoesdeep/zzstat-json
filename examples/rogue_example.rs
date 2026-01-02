@@ -1,3 +1,5 @@
+#![allow(deprecated)]
+
 //! Rogue Class Example
 //!
 //! This example demonstrates advanced conditional transforms and multiple conditions.

@@ -1,3 +1,7 @@
+#![deprecated(
+    since = "0.1.1",
+    note = "This crate is deprecated. Use `zzstat` directly instead; it is powerful enough on its own and easier to use."
+)]
 //! # zzstat-json
 //!
 //! JSON-based stat configuration for the `zzstat` crate. Define and manage your game stats

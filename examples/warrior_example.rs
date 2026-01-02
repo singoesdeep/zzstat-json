@@ -1,3 +1,5 @@
+#![allow(deprecated)]
+
 //! Warrior Class Example
 //!
 //! This example demonstrates the template system with a complete warrior character.

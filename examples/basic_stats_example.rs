@@ -1,3 +1,5 @@
+#![allow(deprecated)]
+
 //! Basic Stats Example
 //!
 //! This example demonstrates direct stat definitions (without templates).

@@ -1,3 +1,5 @@
+#![allow(deprecated)]
+
 //! Resistance Stats Example
 //!
 //! This example demonstrates element resistance stats that scale with Vitality.
