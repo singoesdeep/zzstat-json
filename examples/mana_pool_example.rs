@@ -1,3 +1,5 @@
+#![allow(deprecated)]
+
 //! Mana Pool Example
 //!
 //! This example demonstrates mana system with pool and regeneration.

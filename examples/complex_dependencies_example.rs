@@ -1,3 +1,5 @@
+#![allow(deprecated)]
+
 //! Complex Dependencies Example
 //!
 //! This example demonstrates complex stat dependencies with multiple layers.

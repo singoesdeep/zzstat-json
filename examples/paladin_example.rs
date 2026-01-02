@@ -1,3 +1,5 @@
+#![allow(deprecated)]
+
 //! Paladin Class Example
 //!
 //! This example demonstrates a tank class with high HP, defense, and multiple stat dependencies.
